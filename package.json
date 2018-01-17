@@ -1,0 +1,16 @@
+{
+  "name": "02-storybooks",
+  "version": "1.0.0",
+  "description": "BT15-02 Storybooks",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Chi Lin",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^5.0.0"
+  }
+}
