@@ -10,8 +10,4 @@ router.get('/google/callback',
   passport.authenticate('google', {failureRedirect: '/'}),
   (req, res) => res.redirect('/dashboard')); // Successful authentication
 
-router.get('/dashboard', (req, res) => {
-  res.send('DASHBOARD!');
-});
-
 module.exports = router;
