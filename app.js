@@ -1,5 +1,6 @@
 const keys = require('./config/keys');
 const express = require('express');
+const exphbs = require('express-handlebars');
 
 // MongoDB database -------------------------------------------------
 const mongoose = require('mongoose');
@@ -23,14 +24,9 @@ const port = process.env.PORT || 5000;
 const passport = require('passport');
 require('./config/passport')(passport);
 
-// Routes -----------------------------------------------------------
-app.get('/', (req, res) => {
-  res.send('It works');
-});
-
-app.get('/dashboard', (req, res) => {
-  res.send('Dashboard');
-});
+// express-handlebars middleware ------------------------------------
+app.engine('handlebars', exphbs({defaultLayout: 'master'}));
+app.set('view engine', 'handlebars');
 
 // Session and passport middlewares ---------------------------------
 app.use(cookieParser('secret'));
@@ -53,6 +49,8 @@ app.use((req, res, next) => {
 });
 
 // Routes (should go below the sessions and passport) ---------------
+const index = require('./routes/index');
+app.use('/', index);
 const auth = require('./routes/auth');
 app.use('/auth', auth);
 
