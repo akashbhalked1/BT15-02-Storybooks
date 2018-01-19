@@ -1,2 +1,29 @@
-<h1>Welcome, {{user.firstName}}, to Dashboard</h1>
-<h3>Your Stories</h3>
+<h4>Welcome, {{user.firstName}}, to your dashboard</h4>
+{{#if stories}}
+<table class="highlight">
+  <thead>
+    <tr>
+      <th>Title</th><th>Date</th><th>Status</th><th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each stories}}
+    <tr>
+      <td><a href="/stories/{{id}}/show">{{title}}</a></td>
+      <td>{{formatDate date 'MMM Do, YYYY'}}</td>
+      <td><span class="status-text">{{status}}</span></td>
+      <td>
+        <a href="/stories/{{id}}/edit" class="btn left-align">
+          <i class="material-icons left">mode_edit</i>Edit</a>
+        <form action="/stories/{{id}}" method="POST" id="del-form">
+          <button type="submit" class="btn red sm">
+            <i class="material-icons left">delete</i>Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+{{else}}
+<p>You have not created any stories yet.</p>
+{{/if}}

@@ -2,14 +2,17 @@ const keys = require('./config/keys');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
+const bodyParser = require('body-parser');
+const {trunc, stripTags, formatDate} = require('./helpers/hbs');
 
-// MongoDB database -------------------------------------------------
+// MongoDB database and models --------------------------------------
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI)
         .then(() => console.log('Connected to mLab MongoDB'))
         .catch((err) => console.log(err));
 require('./models/User');
+require('./models/Story');
 
 // Sessions and related packages ------------------------------------
 const cookieParser = require('cookie-parser');
@@ -25,8 +28,15 @@ const port = process.env.PORT || 5000;
 const passport = require('passport');
 require('./config/passport')(passport);
 
+// Body-parser middleware -------------------------------------------
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
 // express-handlebars middleware ------------------------------------
-app.engine('handlebars', exphbs({defaultLayout: 'master'}));
+app.engine('handlebars', exphbs({
+  helpers: {trunc, stripTags, formatDate},
+  defaultLayout: 'master'
+}));
 app.set('view engine', 'handlebars');
 
 // Session and passport middlewares ---------------------------------
