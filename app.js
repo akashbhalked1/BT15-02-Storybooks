@@ -1,6 +1,7 @@
 const keys = require('./config/keys');
 const express = require('express');
 const exphbs = require('express-handlebars');
+const path = require('path');
 
 // MongoDB database -------------------------------------------------
 const mongoose = require('mongoose');
@@ -53,6 +54,10 @@ const index = require('./routes/index');
 app.use('/', index);
 const auth = require('./routes/auth');
 app.use('/auth', auth);
+const stories = require('./routes/stories');
+app.use('/stories', stories);
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}...`);
