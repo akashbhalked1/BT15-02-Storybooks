@@ -29,5 +29,14 @@ module.exports = {
     // See http://handlebarsjs.com/block_helpers.html
     return opt.fn(this)
               .replace(new RegExp(' value=\"'+status+'\"'), '$& selected');
+  },
+  editIcon: (storyUser, logUser, storyId, floating = true) => {
+    if(storyUser === logUser)
+      if(floating) return `<a href="/stories/${storyId}/edit" 
+        class="btn-floating halfway-fab red">
+        <i class="material-icons">mode_edit</i></a>`;
+      else return `<a href="/stories/${storyId}/edit">
+        <i class="material-icons">mode_edit</i></a>`;
+    else return '';
   }
 };

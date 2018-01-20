@@ -1,5 +1,3 @@
-module.exports = {
-  mongoURI: "mongodb://abbie:123456@ds027409.mlab.com:27409/bt15-02-dev",
-  googleClientID: "804306302100-gk1lddggpspml707lgsrb2d9crquhs3d.apps.googleusercontent.com",
-  googleClientSecret: "1oq_xp9fMel-ITrIfsZWFe75"
-};
+if(process.env.NODE_ENV === 'production')
+  module.exports = require('./keys_prod');
+else module.exports = require('./keys_dev');

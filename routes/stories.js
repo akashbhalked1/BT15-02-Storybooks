@@ -7,6 +7,7 @@ const User = mongoose.model('users');
 
 router.get('/', (req, res) => {
   Story.find({status: 'public'})
+       .sort({date: -1})
        .populate('user')
        .then((stories) => res.render('stories/index', {stories}))
        .catch((err) => console.log(err));
@@ -16,10 +17,10 @@ router.get('/add', ensureAuth, (req, res) => {
   res.render('stories/add');
 });
 
-router.get('/:id/edit', ensureAuth, (req, res) => {
-  Story.findById(req.params.id)
-       .then((story) => res.render('stories/edit', {story}))
-       .catch((err) => console.log(err));
+router.get('/:id/edit', ensureAuth, async (req, res) => {
+  let story = await Story.findById(req.params.id);
+  if(story.user.toString() !== req.user.id) res.redirect('/stories');
+  else res.render('stories/edit', {story});
 });
 
 router.post('/', (req, res) => {
@@ -40,12 +41,16 @@ router.post('/', (req, res) => {
                      .catch((err) => console.log(err));
 });
 
-router.get('/:id/show', (req, res) => {
-  Story.findById(req.params.id)
-       .populate('user')
-       .populate('comments.commentUser')
-       .then((story) => res.render('stories/show', {story}))
-       .catch((err) => console.log(err));
+router.get('/:id/show', async (req, res) => {
+  let story = await Story.findById(req.params.id)
+                         .populate('user')
+                         .populate('comments.commentUser');
+  if(story.status === 'public') res.render('stories/show', {story});
+  else 
+    if(req.user)
+      if(req.user.id === story.user.id) res.render('stories/show', {story});
+      else res.redirect('/stories');
+    else res.redirect('/stories');
 });
 
 router.put('/:id', (req, res) => {
@@ -76,6 +81,22 @@ router.post('/:id/comment', async (req, res) => {
   story.comments.unshift(newComment);
   story.save()
        .then(() => res.redirect(`/stories/${req.params.id}/show`))
+       .catch((err) => console.log(err));
+});
+
+router.get('/user/:id', (req, res) => {
+  Story.find({user: req.params.id, status: 'public'})
+       .sort({date: -1})
+       .populate('user')
+       .then((stories) => res.render('stories/index', {stories}))
+       .catch((err) => console.log(err));
+});
+
+router.get('/my', ensureAuth, (req, res) => {
+  Story.find({user: req.user.id})
+       .sort({date: -1})
+       .populate('user')
+       .then((stories) => res.render('stories/index', {stories}))
        .catch((err) => console.log(err));
 });
 
