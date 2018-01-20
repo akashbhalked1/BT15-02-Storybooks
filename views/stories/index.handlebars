@@ -8,11 +8,9 @@
           <i class="material-icons">mode_edit</i>
         </a>
       </div>
-      <div class="card-content">
+      <div class="card-content index-card-content">
         <h5 class="center-align">{{title}}</h5>
-        <p class="story-text">{{stripTags (trunc body 100)}}</p>
-      </div>
-      <div class="center-align">
+        <div class="story-body">{{{trunc body 100}}}</div>
         <div class="chip">
           <img src="{{user.image}}">{{user.firstName}} {{user.lastName}}
         </div>

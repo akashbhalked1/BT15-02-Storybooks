@@ -16,6 +16,12 @@ router.get('/add', ensureAuth, (req, res) => {
   res.render('stories/add');
 });
 
+router.get('/:id/edit', ensureAuth, (req, res) => {
+  Story.findById(req.params.id)
+       .then((story) => res.render('stories/edit', {story}))
+       .catch((err) => console.log(err));
+});
+
 router.post('/', (req, res) => {
   let allowComments;
   if(req.body.allowComments) allowComments = true;
@@ -39,6 +45,24 @@ router.get('/:id/show', (req, res) => {
        .populate('user')
        .then((story) => res.render('stories/show', {story}))
        .catch((err) => console.log(err));
+});
+
+router.put('/:id', (req, res) => {
+  Story.findById(req.params.id)
+       .then((story) => {
+         let allowComments;
+         if(req.body.allowComments) allowComments = true;
+         else allowComments = false;
+
+         story.title = req.body.title;
+         story.status = req.body.status;
+         story.allowComments = allowComments;
+         story.body = req.body.ck;
+
+         story.save()
+              .then((s) => res.redirect('/dashboard'))
+              .catch((err) => console.log(err));
+       });
 });
 
 module.exports = router;

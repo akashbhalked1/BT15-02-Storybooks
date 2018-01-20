@@ -3,7 +3,8 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const bodyParser = require('body-parser');
-const {trunc, stripTags, formatDate} = require('./helpers/hbs');
+const methodOverride = require('method-override');
+const {trunc, stripTags, formatDate, select} = require('./helpers/hbs');
 
 // MongoDB database and models --------------------------------------
 const mongoose = require('mongoose');
@@ -32,9 +33,12 @@ require('./config/passport')(passport);
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+// Method-override middleware ---------------------------------------
+app.use(methodOverride('_method'));
+
 // express-handlebars middleware ------------------------------------
 app.engine('handlebars', exphbs({
-  helpers: {trunc, stripTags, formatDate},
+  helpers: {trunc, stripTags, formatDate, select},
   defaultLayout: 'master'
 }));
 app.set('view engine', 'handlebars');

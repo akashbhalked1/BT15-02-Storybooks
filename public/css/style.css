@@ -8,7 +8,11 @@ main {
   flex: 1 0 auto;
 }
 
-.story-text {
+.index-card-content {
+  height: 200px;
+}
+
+.story-body {
   height: 80px;
 }
 
