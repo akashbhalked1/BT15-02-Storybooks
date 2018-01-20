@@ -43,6 +43,7 @@ router.post('/', (req, res) => {
 router.get('/:id/show', (req, res) => {
   Story.findById(req.params.id)
        .populate('user')
+       .populate('comments.commentUser')
        .then((story) => res.render('stories/show', {story}))
        .catch((err) => console.log(err));
 });
@@ -63,6 +64,18 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   Story.findByIdAndRemove(req.params.id)
        .then(() => res.redirect('/dashboard'))
+       .catch((err) => console.log(err));
+});
+
+router.post('/:id/comment', async (req, res) => {
+  let story = await Story.findById(req.params.id);
+  let newComment = {
+    commentBody: req.body.cbody,
+    commentUser: req.user.id,
+  };
+  story.comments.unshift(newComment);
+  story.save()
+       .then(() => res.redirect(`/stories/${req.params.id}/show`))
        .catch((err) => console.log(err));
 });
 

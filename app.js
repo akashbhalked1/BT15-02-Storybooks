@@ -4,7 +4,7 @@ const exphbs = require('express-handlebars');
 const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const {trunc, formatDate, select} = require('./helpers/hbs');
+const {trunc, formatDate, formatDateFromNow, select} = require('./helpers/hbs');
 
 // MongoDB database and models --------------------------------------
 const mongoose = require('mongoose');
@@ -38,7 +38,7 @@ app.use(methodOverride('_method'));
 
 // express-handlebars middleware ------------------------------------
 app.engine('handlebars', exphbs({
-  helpers: {trunc, formatDate, select},
+  helpers: {trunc, formatDate, formatDateFromNow, select},
   defaultLayout: 'master'
 }));
 app.set('view engine', 'handlebars');

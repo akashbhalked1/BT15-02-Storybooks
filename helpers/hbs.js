@@ -17,6 +17,9 @@ module.exports = {
   formatDate: (dt, format) => {
     return moment(dt).format(format);
   },
+  formatDateFromNow: (dt) => {
+    return moment(dt).fromNow();
+  },
   select: (status, opt) => {
     // opt.fn(this) returns:
     //    <option value="public">Public</option>
