@@ -11,7 +11,7 @@ const {trunc, formatDate, formatDateFromNow,
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 mongoose.connect(keys.mongoURI)
-        .then(() => console.log('Connected to mLab MongoDB'))
+        .then(() => console.log('Connected to database.'))
         .catch((err) => console.log(err));
 require('./models/User');
 require('./models/Story');
