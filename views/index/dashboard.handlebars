@@ -15,7 +15,8 @@
       <td>
         <a href="/stories/{{id}}/edit" class="btn left-align">
           <i class="material-icons left">mode_edit</i>Edit</a>
-        <form action="/stories/{{id}}" method="POST" id="del-form">
+        <form action="/stories/{{id}}?_method=DELETE" method="POST" id="del-form"
+              onsubmit="return confirm('Are you sure?');">
           <button type="submit" class="btn red sm">
             <i class="material-icons left">delete</i>Delete</button>
         </form>

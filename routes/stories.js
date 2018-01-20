@@ -48,21 +48,22 @@ router.get('/:id/show', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  Story.findById(req.params.id)
-       .then((story) => {
-         let allowComments;
-         if(req.body.allowComments) allowComments = true;
-         else allowComments = false;
+  let allowComments;
+  if(req.body.allowComments) allowComments = true;
+  else allowComments = false;
+  
+  Story.findByIdAndUpdate(req.params.id, {title: req.body.title,
+                                          status: req.body.status,
+                                          allowComments: allowComments,
+                                          body: req.body.ck})
+       .then(() => res.redirect('/dashboard'))
+       .catch((err) => console.log(err));
+});
 
-         story.title = req.body.title;
-         story.status = req.body.status;
-         story.allowComments = allowComments;
-         story.body = req.body.ck;
-
-         story.save()
-              .then((s) => res.redirect('/dashboard'))
-              .catch((err) => console.log(err));
-       });
+router.delete('/:id', (req, res) => {
+  Story.findByIdAndRemove(req.params.id)
+       .then(() => res.redirect('/dashboard'))
+       .catch((err) => console.log(err));
 });
 
 module.exports = router;
