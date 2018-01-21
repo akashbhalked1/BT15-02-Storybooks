@@ -10,6 +10,7 @@ router.get('/', ensureGuest, (req, res) => {
 
 router.get('/dashboard', ensureAuth, (req, res) => {
   Story.find({user: req.user.id})
+       .sort({date: -1})
        .then((stories) => res.render('index/dashboard', {stories}))
        .catch((err) => console.log(err));
 });
