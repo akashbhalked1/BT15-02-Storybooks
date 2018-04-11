@@ -9,7 +9,7 @@ module.exports = (passport) => {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
       callbackURL: '/auth/google/callback',
-      proxy: true   // to work with Heroku's 'https://'
+      // proxy: true   // to work with Heroku's 'https://'
       },
       (accessToken, refreshToken, profile, done) => {
         User.findOne({googleID: profile.id})

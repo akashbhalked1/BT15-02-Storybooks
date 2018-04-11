@@ -2,7 +2,7 @@
   <div class="container">
     <div class="nav-wrapper">
       <a href="/" class="brand-log center">Storybooks</a>
-      <a href="#" data-activates="main-menu" class="button-collapse show-on-large">
+      <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large">
         <i class="material-icons left">menu</i>
       </a>
       <ul class="right hide-on-small-only">
@@ -15,7 +15,7 @@
           <i class="material-icons left">library_books</i>Public Stories</a></li>
         {{/if}}
       </ul>
-      <ul class="side-nav" id="main-menu">
+      <ul class="sidenav" id="slide-out">
         {{#if user}}
         <li><a href="/dashboard"><i class="material-icons left">apps</i>Dashboard</a></li>
         <li><a href="/stories"><i class="material-icons left">library_books</i>Public Stories</a></li>

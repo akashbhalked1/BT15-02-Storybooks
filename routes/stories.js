@@ -24,14 +24,10 @@ router.get('/:id/edit', ensureAuth, async (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  let allowComments;
-  if(req.body.allowComments) allowComments = true;
-  else allowComments = false;
-  
   let newStory = {
     title: req.body.title,
     status: req.body.status,
-    allowComments,
+    allowComments: !!req.body.allowComments, // checkbox comes as "on/null"
     body: req.body.ck,
     user: req.user.id,
   };
@@ -47,9 +43,7 @@ router.get('/:id/show', async (req, res) => {
                          .populate('comments.commentUser');
   if(story.status === 'public') res.render('stories/show', {story});
   else 
-    if(req.user)
-      if(req.user.id === story.user.id) res.render('stories/show', {story});
-      else res.redirect('/stories');
+    if(req.user && req.user.id === story.user.id) res.render('stories/show', {story});
     else res.redirect('/stories');
 });
 
